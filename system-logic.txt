@@ -1,0 +1,36 @@
+			This is a restful centralized exclusive locking api system.
+
+This restful api manager control remote distributed resources locking requests over HTTP requests.
+
+The main idea is that i have four main components (Resource - Lock - Manager - Request):
+	1 -  request a lock over a resource by the resource name and get a response :
+		- the request is invalid (bad request)
+		- the lock is not acquired (request deleted)
+		- the lock is not acquired (timeout): which mean that the resource was locked by another client
+		  and your lock request went to a queue and then expired.
+		- the lock is acquired(succeeded): the resource is now locked for the lock lifetime and you have a unique lock id.
+
+	2- delete a lock by resource name and the lock unique id,
+	    the lock may be exist and (currently locking a resource, queued) or
+	    maybe not existed anymore (lifetime expiration, bad url, already deleted)
+		- the lock exist and deleted  and the response "no content
+		- the lock doesn't exist and the response is "not found"
+
+
+
+
+System main concepts :
+
+	- the resource, which is designed as a simple string ([a-zA-Z0-9]+ regexp).
+	- the lock, which is always exclusive to one resource.
+	- the client, which can acquire or release some locks on resources
+	  for a given resource, at a given time, there is only a maximum of ONE exclusive lock acquired.
+	-clients can be distributed on different machines / networks... without any change on the rule of the exclusive lock.
+
+The lock is defined by 3 incoming parameters :
+
+	-"title" param, which is a simple indicative string about the client requesting the lock (so a kind of "user agent")
+	-"lifetime" param (in seconds), which is the maximum duration of the lock when acquired (after this, the lock will be considered as automatically released)
+	-"wait" param (in seconds), which is the maximum duration to wait before acquiring the lock (after this, the client gives up about acquiring the lock)
+	If the lock is acquired, the system returns the lock as a unique URL.
+
