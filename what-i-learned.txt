@@ -1,0 +1,6 @@
+What i have learned throw this two days of the task:
+1- resources locking and how to handle it's cases.
+2- building a restful apis.
+3- Tornado, Docker(didn't use it here)
+4- more knowledge of when to use what from python web framework. 
+5- unit testing over reset api requests.
