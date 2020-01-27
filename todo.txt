@@ -1,0 +1,2 @@
+- Admin web UI to manage rest requests.
+- detect deadlocks (simple  deadlock and chain deadlock)
